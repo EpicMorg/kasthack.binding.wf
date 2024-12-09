@@ -4,19 +4,27 @@
 		<PublishReferencesDocumentationFiles>true</PublishReferencesDocumentationFiles>
 		<PublishDocumentationFile>true</PublishDocumentationFile>
 		<PublishDocumentationFiles>true</PublishDocumentationFiles>
-		<TargetFrameworks>net40;net45;net451;net452;net46;net461;net462;net47</TargetFrameworks>
+		<TargetFrameworks>net40;net45;net451;net452;net46;net461;net462;net47;net471;net472;net48;net48;net481;net5.0-windows;net6.0-windows;net7.0-windows;net8.0-windows</TargetFrameworks>
 		<PackageId>kasthack.binding.wf</PackageId>
 		<PackageDescription>Windows.Forms data binding lambda helper. Gets rid of that literal / nameof bullshit in your code.</PackageDescription>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageTags>kasthack databinding lambda winforms binding windows forms</PackageTags>
-		<PackageLicenseUrl>https://github.com/kasthack/kasthack.binding.wf/blob/master/LICENSE.txt</PackageLicenseUrl>
 		<PackageProjectUrl>http://github.com/kasthack/kasthack.binding.wf</PackageProjectUrl>
+		<PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Version>1.2.1</Version>
-		<AssemblyVersion>1.2.1.0</AssemblyVersion>
+		<UseWindowsForms>true</UseWindowsForms>
+		<Version>1.2.2</Version>
+		<AssemblyVersion>1.2.2</AssemblyVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<Reference Include="System.Windows.Forms" />
 	</ItemGroup>
+	
+	<ItemGroup>
+		<None Include="../LICENSE.md" Pack="true" PackagePath=""/>
+		<None Include="../README.md" Pack="true" PackagePath=""/>
+	</ItemGroup>
+	
 </Project>

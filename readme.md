@@ -1,18 +1,29 @@
 # kasthack.binding.wf
 
-[![Nuget](https://img.shields.io/nuget/v/kasthack.binding.wf.svg)](https://www.nuget.org/packages/kasthack.binding.wf/)
-[![NuGet](https://img.shields.io/nuget/dt/kasthack.binding.wf.svg)](https://www.nuget.org/packages/kasthack.binding.wf/)
-[![Build status](https://img.shields.io/appveyor/ci/kasthack/kasthack-binding-wf.svg)](https://ci.appveyor.com/project/kasthack/kasthack-binding-wf)
-[![license](https://img.shields.io/github/license/kasthack/kasthack.binding.wf.svg)](LICENSE)
-[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/kasthack_binding_wf)
+[![NuGet Version](https://img.shields.io/nuget/v/kasthack.binding.wf?style=flat-square&link=https%3A%2F%2Fwww.nuget.org%2Fpackages%2Fkasthack.binding.wf)](https://www.nuget.org/packages/kasthack.binding.wf/)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/kasthack.binding.wf?style=flat-square&link=https%3A%2F%2Fwww.nuget.org%2Fpackages%2Fkasthack.binding.wf)](https://www.nuget.org/packages/kasthack.binding.wf/)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/kasthack-labs/kasthack.binding.wf/build-and-deploy.yml?style=flat-square&link=https%3A%2F%2Fgithub.com%2Fkasthack-labs%2Fkasthack.binding.wf%2Factions%2Fworkflows%2Fbuild-and-deploy.yml)](https://github.com/kasthack-labs/kasthack.binding.wf/actions/workflows/build-and-deploy.yml)
+[![GitHub License](https://img.shields.io/github/license/kasthack-labs/kasthack.binding.wf?style=flat-square&link=LICENSE.md)](LICENSE.md)
+[![GitHub repo size](https://img.shields.io/github/repo-size/kasthack-labs/kasthack.binding.wf?style=flat-square&link=https%3A%2F%2Fgithub.com%2Fkasthack-labs%2F)](https://github.com/kasthack-labs/)
+[![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/kasthack-labs/kasthack.binding.wf/total?style=flat-square&link=https%3A%2F%2Fgithub.com%2Fkasthack-labs%2Fkasthack.binding.wf%2Freleases)](https://github.com/kasthack-labs/releases)
 
-## What
+## About
 
-Windows.Forms data binding lambda helper. Gets rid of that literal / nameof bullshit in your code.
+Windows.Forms data binding lambda helper.
 
 ## Installation
 
+### CLI
+
 `Install-Package kasthack.binding.wf`
+
+### dotNet 5+
+
+`dotnet add package kasthack.binding.wf`
+
+### Direct in project via PackageReference
+
+`<PackageReference Include="kasthack.binding.wf" Version="1.2.26" />`
 
 ## Usage
 
