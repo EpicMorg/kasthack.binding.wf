@@ -1,0 +1,95 @@
+name: Build and Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+
+defaults:
+  run:
+    working-directory: src
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      DOTNET_NOLOGO: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8
+
+      - name: Install dotnet-script
+        run: dotnet tool install --global dotnet-script
+        shell: pwsh
+
+      - name: Update version in project
+        run: dotnet script "${{ github.workspace }}/UpdateVersion.csx"
+        env:
+          GITHUB_RUN_NUMBER: ${{ github.run_number }}
+        shell: pwsh
+
+      - name: Get version from project
+        id: get_version
+        run: |
+          $version_file = "${{ github.workspace }}/src/kasthack.binding.wf.csproj"
+          $current_version = (Get-Content $version_file | Select-String -Pattern '<Version>(.*?)</Version>').Matches.Groups[1].Value
+          if (-not $current_version) {
+              throw "Could not read version from: $version_file"
+          }
+          echo "Current version is: $current_version"
+          echo "PROJECT_VERSION=$current_version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        shell: pwsh
+
+      - name: Restore dependencies in project
+        run: dotnet restore
+
+      - name: Build project
+        run: dotnet build --configuration ${{ matrix.configuration }} --verbosity minimal
+
+      - name: Pack NuGet package [Debug]
+        if: matrix.configuration == 'Debug'
+        run: dotnet pack --configuration Debug --output "${{ github.workspace }}/src/nupkg"
+
+      - name: Pack NuGet package [Release]
+        if: matrix.configuration == 'Release'
+        run: dotnet pack --configuration Release --output "${{ github.workspace }}/src/nupkg"
+
+      - name: Upload the artifact [Debug]
+        if: matrix.configuration == 'Debug'
+        uses: actions/upload-artifact@v4
+        with:
+          name: kasthack.binding.wf.debug.${{ env.PROJECT_VERSION }}.nupkg.zip
+          path: "${{ github.workspace }}/src/nupkg/"
+
+      - name: Upload the artifact [Release]
+        if: matrix.configuration == 'Release'
+        uses: actions/upload-artifact@v4
+        with:
+          name: kasthack.binding.wf.release.${{ env.PROJECT_VERSION }}.nupkg.zip
+          path: "${{ github.workspace }}/src/nupkg/"
+
+      - name: Create GitHub Release
+        if: matrix.configuration == 'Release'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.PROJECT_VERSION }}
+          name: ${{ env.PROJECT_VERSION }}
+          files: ${{ github.workspace }}/src/nupkg/*.nupkg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push NuGet package
+        if: matrix.configuration == 'Release'
+        run: dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
