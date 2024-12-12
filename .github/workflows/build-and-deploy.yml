@@ -28,7 +28,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8
+          dotnet-version: 9
 
       - name: Install dotnet-script
         run: dotnet tool install --global dotnet-script
@@ -53,18 +53,18 @@ jobs:
         shell: pwsh
 
       - name: Restore dependencies in project
-        run: dotnet restore
+        run: dotnet restore "${{ github.workspace }}/src/kasthack.binding.wf.csproj"
 
       - name: Build project
-        run: dotnet build --configuration ${{ matrix.configuration }} --verbosity minimal
+        run: dotnet build --configuration ${{ matrix.configuration }} --verbosity minimal "${{ github.workspace }}/src/kasthack.binding.wf.csproj" 
 
       - name: Pack NuGet package [Debug]
         if: matrix.configuration == 'Debug'
-        run: dotnet pack --configuration Debug --output "${{ github.workspace }}/src/nupkg"
+        run: dotnet pack --configuration Debug "${{ github.workspace }}/src/kasthack.binding.wf.csproj" --output "${{ github.workspace }}/src/nupkg"
 
       - name: Pack NuGet package [Release]
         if: matrix.configuration == 'Release'
-        run: dotnet pack --configuration Release --output "${{ github.workspace }}/src/nupkg"
+        run: dotnet pack --configuration Release "${{ github.workspace }}/src/kasthack.binding.wf.csproj" --output "${{ github.workspace }}/src/nupkg"
 
       - name: Upload the artifact [Debug]
         if: matrix.configuration == 'Debug'
